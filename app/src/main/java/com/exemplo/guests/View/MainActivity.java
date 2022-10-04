@@ -1,11 +1,9 @@
-package com.exemplo.guests;
+package com.exemplo.guests.View;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Menu;
 
-import com.google.android.material.snackbar.Snackbar;
+import com.exemplo.guests.R;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.navigation.NavController;
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.appBarMain.toolbar);
 
         binding.appBarMain.fab.setOnClickListener(view ->
-                startActivity(new Intent(getApplicationContext(),GuestFormActivity.class)));
+                startActivity(new Intent(getApplicationContext(), GuestActivity.class)));
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;

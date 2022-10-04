@@ -1,4 +1,4 @@
-package com.exemplo.guests.ui.present;
+package com.exemplo.guests.View;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.exemplo.guests.ViewModel.PresentViewModel;
 import com.exemplo.guests.databinding.FragmentPresentBinding;
 
 public class PresentFragment extends Fragment {

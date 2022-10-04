@@ -1,4 +1,4 @@
-package com.exemplo.guests.ui.all;
+package com.exemplo.guests.View;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.exemplo.guests.ViewModel.AllGuestsViewModel;
 import com.exemplo.guests.databinding.FragmentAllGuestsBinding;
 
 public class AllGuestsFragment extends Fragment {

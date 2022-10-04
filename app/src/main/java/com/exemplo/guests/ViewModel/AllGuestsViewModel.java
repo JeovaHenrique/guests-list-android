@@ -1,16 +1,16 @@
-package com.exemplo.guests.ui.absent;
+package com.exemplo.guests.ViewModel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class AbsentViewModel extends ViewModel {
+public class AllGuestsViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public AbsentViewModel() {
+    public AllGuestsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is Absent");
+        mText.setValue("This are All Guests");
     }
 
     public LiveData<String> getText() {
