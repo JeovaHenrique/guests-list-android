@@ -31,12 +31,39 @@ public class GuestRepository {
         if(INSTANCE == null) {
             INSTANCE = new GuestRepository(context);
         }
-
         return INSTANCE;
     }
 
     public List<GuestModel> getList() {
-        return new ArrayList<>();
+        List<GuestModel>list = new ArrayList<>();
+
+        try {
+            SQLiteDatabase db = this.mDataBase.getReadableDatabase();
+
+            String[] columns = {ID,NAME, PRESENCE};
+
+            Cursor cursor =  db.query(TABLE_NAME,columns,null,null,null,null,null);
+            if(cursor != null && cursor.getCount() > 0) {
+                while (cursor.moveToNext()) {
+
+                    @SuppressLint("Range")
+                    Integer id = cursor.getInt(cursor.getColumnIndex(ID));
+                    @SuppressLint("Range")
+                    String name = cursor.getString(cursor.getColumnIndex(NAME));
+                    @SuppressLint("Range")
+                    String presence = cursor.getString(cursor.getColumnIndex(GUEST.COLUMNS.PRESENCE));
+
+                    list.add(new GuestModel(id, name, presence));
+                }
+
+            }
+            if(cursor != null) {
+                cursor.close();
+            }
+            return list;
+        }catch (Exception e) {
+            return list;
+        }
     }
 
     public GuestModel get(Integer id) {
@@ -82,7 +109,7 @@ public class GuestRepository {
             values.put(NAME,guest.getName());
             values.put(PRESENCE, String.valueOf(guest.getConfirmation()));
 
-            db.insert(TABLE_NAME,null,null);
+            db.insert(TABLE_NAME,null,values);
 
             return true;
 
