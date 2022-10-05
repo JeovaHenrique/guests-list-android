@@ -128,7 +128,7 @@ public class GuestRepository {
             values.put(NAME,guest.getName());
             values.put(PRESENCE, String.valueOf(guest.getConfirmation()));
 
-            String where = TABLE_NAME + "= ?";
+            String where = ID + "= ?";
             String[] args = {String.valueOf(guest.getId())};
 
             db.update(TABLE_NAME,values,where,args);

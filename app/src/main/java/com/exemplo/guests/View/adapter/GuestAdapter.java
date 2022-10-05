@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.exemplo.guests.R;
+import com.exemplo.guests.View.listener.OnListClick;
 import com.exemplo.guests.View.viewHolder.GuestViewHolder;
 import com.exemplo.guests.model.GuestModel;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class GuestAdapter extends RecyclerView.Adapter<GuestViewHolder> {
 
     private List<GuestModel> list = new ArrayList<>();
+    private OnListClick listClick;
 
     @NonNull
     @Override
@@ -30,7 +32,7 @@ public class GuestAdapter extends RecyclerView.Adapter<GuestViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull GuestViewHolder holder, int position) {
-        holder.bind(this.list.get(position));
+        holder.bind(this.list.get(position),this.listClick);
 
     }
 
@@ -42,5 +44,9 @@ public class GuestAdapter extends RecyclerView.Adapter<GuestViewHolder> {
     public void attachList(List<GuestModel> list){
         this.list = list;
         notifyDataSetChanged();
+    }
+
+    public void attachListener(OnListClick listener) {
+        this.listClick = listener;
     }
 }

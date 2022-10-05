@@ -1,10 +1,11 @@
 package com.exemplo.guests.View;
 
-import static com.exemplo.guests.constants.GuestConfirmation.CONFIRMATION.ABSENT;
-import static com.exemplo.guests.constants.GuestConfirmation.CONFIRMATION.NOT_CONFIRMED;
-import static com.exemplo.guests.constants.GuestConfirmation.CONFIRMATION.PRESENT;
+import static com.exemplo.guests.constants.GuestConstants.CONFIRMATION.ABSENT;
+import static com.exemplo.guests.constants.GuestConstants.CONFIRMATION.NOT_CONFIRMED;
+import static com.exemplo.guests.constants.GuestConstants.CONFIRMATION.PRESENT;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -12,9 +13,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.exemplo.guests.R;
 import com.exemplo.guests.ViewModel.GuestViewModel;
+import com.exemplo.guests.constants.GuestConstants;
 import com.exemplo.guests.model.GuestModel;
 
 public class GuestActivity extends AppCompatActivity implements View.OnClickListener{
@@ -37,7 +40,36 @@ public class GuestActivity extends AppCompatActivity implements View.OnClickList
         this.mViewHolder.btnSave = findViewById(R.id.btn_done);
 
         this.setListener();
+        this.setObservers();
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            this.mGuestId = bundle.getInt(GuestConstants.GUESTID);
+            this.mGuestViewModel.get(mGuestId);
+        }
     }
+
+    private void setObservers() {
+        this.mGuestViewModel.guest.observe(this, guestModel -> {
+            mViewHolder.editName.setText(guestModel.getName());
+
+            mViewHolder.btnNotConfirmed.setChecked(guestModel.getConfirmation().equals(NOT_CONFIRMED));
+            mViewHolder.btnPresent.setChecked(guestModel.getConfirmation().equals(PRESENT));
+            mViewHolder.btnAbsent.setChecked(guestModel.getConfirmation().equals(ABSENT));
+        });
+
+        this.mGuestViewModel.feedBack.observe(this, aBoolean -> {
+            if(aBoolean) {
+
+                String str = (mGuestId == 0) ? "Guest Entered Successfully" : "Guest Updated Successfully";
+
+                Toast.makeText(this,str,Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+    }
+
+
 
     private void setListener() {
         this.mViewHolder.btnSave.setOnClickListener(this);

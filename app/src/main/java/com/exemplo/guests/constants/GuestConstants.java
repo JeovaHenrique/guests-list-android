@@ -1,8 +1,8 @@
 package com.exemplo.guests.constants;
 
-public class GuestConfirmation {
+public class GuestConstants {
 
-    private GuestConfirmation() {
+    private GuestConstants() {
     }
 
     public static String GUESTID = "guestId";
