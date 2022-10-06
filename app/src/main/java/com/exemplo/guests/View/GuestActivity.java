@@ -20,7 +20,7 @@ import com.exemplo.guests.ViewModel.GuestViewModel;
 import com.exemplo.guests.constants.GuestConstants;
 import com.exemplo.guests.model.GuestModel;
 
-public class GuestActivity extends AppCompatActivity implements View.OnClickListener{
+public class GuestActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ViewHolder mViewHolder = new ViewHolder();
     private GuestViewModel mGuestViewModel;
@@ -43,8 +43,8 @@ public class GuestActivity extends AppCompatActivity implements View.OnClickList
         this.setObservers();
 
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null) {
-            this.mGuestId = bundle.getInt(GuestConstants.GUESTID);
+        if (bundle != null) {
+            this.mGuestId = bundle.getInt(GuestConstants.GUEST_ID);
             this.mGuestViewModel.get(mGuestId);
         }
     }
@@ -58,17 +58,13 @@ public class GuestActivity extends AppCompatActivity implements View.OnClickList
             mViewHolder.btnAbsent.setChecked(guestModel.getConfirmation().equals(ABSENT));
         });
 
-        this.mGuestViewModel.feedBack.observe(this, aBoolean -> {
-            if(aBoolean) {
+        this.mGuestViewModel.feedBack.observe(this, feedBack -> {
 
-                String str = (mGuestId == 0) ? "Guest Entered Successfully" : "Guest Updated Successfully";
+            Toast.makeText(this, feedBack.getMessage(), Toast.LENGTH_SHORT).show();
 
-                Toast.makeText(this,str,Toast.LENGTH_SHORT).show();
-                finish();
-            }
+            if (feedBack.getSuccess()) finish();
         });
     }
-
 
 
     private void setListener() {
@@ -77,17 +73,17 @@ public class GuestActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btn_done) this.handleSave();
+        if (v.getId() == R.id.btn_done) this.handleSave();
     }
 
     private void handleSave() {
         String name = this.mViewHolder.editName.getText().toString();
         String confirmation = NOT_CONFIRMED;
 
-        if(this.mViewHolder.btnPresent.isChecked()) confirmation = PRESENT;
-        if(this.mViewHolder.btnAbsent.isChecked()) confirmation = ABSENT;
+        if (this.mViewHolder.btnPresent.isChecked()) confirmation = PRESENT;
+        if (this.mViewHolder.btnAbsent.isChecked()) confirmation = ABSENT;
 
-        GuestModel guest =  new GuestModel(mGuestId, name, confirmation);
+        GuestModel guest = new GuestModel(mGuestId, name, confirmation);
 
         this.mGuestViewModel.save(guest);
 

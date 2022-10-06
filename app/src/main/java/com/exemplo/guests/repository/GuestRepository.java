@@ -5,6 +5,9 @@ import static com.exemplo.guests.constants.DataBaseConstants.GUEST.COLUMNS.ID;
 import static com.exemplo.guests.constants.DataBaseConstants.GUEST.COLUMNS.NAME;
 import static com.exemplo.guests.constants.DataBaseConstants.GUEST.COLUMNS.PRESENCE;
 import static com.exemplo.guests.constants.DataBaseConstants.GUEST.TABLE_NAME;
+import static com.exemplo.guests.constants.GuestConstants.*;
+import static com.exemplo.guests.constants.GuestConstants.CONFIRMATION.*;
+import static com.exemplo.guests.constants.GuestConstants.CONFIRMATION.ABSENT;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
@@ -12,6 +15,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.exemplo.guests.constants.GuestConstants;
 import com.exemplo.guests.db.GuestDataBaseHelper;
 import com.exemplo.guests.model.GuestModel;
 
@@ -34,7 +38,7 @@ public class GuestRepository {
         return INSTANCE;
     }
 
-    public List<GuestModel> getList() {
+    private List<GuestModel> getList(String selection,String[] selectionArgs) {
         List<GuestModel>list = new ArrayList<>();
 
         try {
@@ -42,7 +46,7 @@ public class GuestRepository {
 
             String[] columns = {ID,NAME, PRESENCE};
 
-            Cursor cursor =  db.query(TABLE_NAME,columns,null,null,null,null,null);
+            Cursor cursor =  db.query(TABLE_NAME,columns,selection,selectionArgs,null,null,null);
             if(cursor != null && cursor.getCount() > 0) {
                 while (cursor.moveToNext()) {
 
@@ -147,7 +151,7 @@ public class GuestRepository {
         try {
             SQLiteDatabase db = this.mDataBase.getWritableDatabase();
 
-            String where = TABLE_NAME + "= ?";
+            String where = ID + "= ?";
             String[] args = {String.valueOf(id)};
 
             db.delete(TABLE_NAME,where,args);
@@ -159,5 +163,21 @@ public class GuestRepository {
             return false;
         }
 
+    }
+
+    public List<GuestModel> getAll() {
+        return this.getList(null,null);
+    }
+
+    public List<GuestModel> getPresent() {
+        String where = PRESENCE + "= ?";
+        String[] args = {String.valueOf(PRESENT)};
+        return this.getList(where,args);
+    }
+
+    public List<GuestModel> getAbsent() {
+        String where = PRESENCE + "= ?";
+        String[] args = {String.valueOf(ABSENT)};
+        return this.getList(where,args);
     }
 }
